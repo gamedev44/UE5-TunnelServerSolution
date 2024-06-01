@@ -1,14 +1,11 @@
 $listenerPort = 7777
-$authCodesFilePath = "AuthCodes\AuthorizationCodes.txt"
+$allowedCodes = @("AFR1-1234", "ANT-5678", "ASI-9012", "EUR-3456", "NAM-7890", "RUS-2345", "SAM-6789", "AFR-1122", "CAN-3344", "KOR-5566")
 $errorLog = "error_log.txt"
 $connectionLog = "connection_log.txt"
 $userLog = "user_log.txt"
-$uePath = "C:\Program Files\Epic Games\UE_5.3\Engine\Binaries\Win64\UnrealEditor.exe"
-$projectPath = "C:\Users\herre\OneDrive\Documents\Unreal Projects\PolyStrike\Data\Low Poly Shooter Pack v5.0\PolyStrike.uproject"
-$serverParams = "MainMenu_Level-server-log -nosteam"
 
 # Function to log errors
-function Write-ErrorLog {
+function Log-Error {
     param (
         [string]$message
     )
@@ -16,7 +13,7 @@ function Write-ErrorLog {
 }
 
 # Function to log connections
-function Write-ConnectionLog {
+function Log-Connection {
     param (
         [string]$message
     )
@@ -24,28 +21,13 @@ function Write-ConnectionLog {
 }
 
 # Function to log user details
-function Write-UserLog {
+function Log-User {
     param (
         [string]$userIP,
         [string]$code
     )
     Add-Content -Path $userLog -Value "$(Get-Date): IP: $userIP, Code: $code"
 }
-
-# Load authorization codes from file
-function Get-AuthCodes {
-    if (Test-Path $authCodesFilePath) {
-        Get-Content $authCodesFilePath
-    } else {
-        Write-ErrorLog "Authorization codes file not found at path: $authCodesFilePath"
-        @()
-    }
-}
-
-$allowedCodes = Get-AuthCodes
-
-# Start the UE server
-Start-Process -FilePath $uePath -ArgumentList "$projectPath $serverParams"
 
 # Start listener
 $listener = [System.Net.Sockets.TcpListener]::new($listenerPort)
@@ -67,15 +49,21 @@ while ($true) {
 
         if ($allowedCodes -contains $code) {
             $writer.WriteLine("Code accepted")
-            Write-ConnectionLog "Connection accepted from $clientIP with code $code"
-            Write-UserLog $clientIP $code
-            # Here you can add any additional code to allow the connection
+            Log-Connection "Connection accepted from $clientIP with code $code"
+            Log-User $clientIP $code
+
+            # Start Unreal Engine server with the specified parameters
+            $ueServerPath = "C:\Program Files\Epic Games\UE_5.3\Engine\Binaries\Win64\UnrealEditor.exe"
+            $ueProjectPath = "C:\Users\herre\OneDrive\Documents\Unreal Projects\PolyStrike\Data\Low Poly Shooter Pack v5.0\PolyStrike.uproject"
+            $ueServerParams = "MainMenu_Level-server-log -nosteam"
+            Start-Process -FilePath $ueServerPath -ArgumentList "`"$ueProjectPath`" $ueServerParams" -NoNewWindow
+
         } else {
             $writer.WriteLine("Invalid code")
-            Write-ErrorLog "Invalid code: $code from $clientIP"
+            Log-Error "Invalid code: $code from $clientIP"
         }
     } catch {
-        Write-ErrorLog "Error processing request from $clientIP: $_"
+        Log-Error "Error processing request from $clientIP: $_"
     }
 
     $client.Close()
