@@ -5,29 +5,32 @@ This solution provides a way to host UE5 games over LAN with remote connections,
 ## Prerequisites
 
 - Windows operating system
-- PowerShell
+
 
 ## Setup Instructions
 
-**Notes:**
- The `AuthCodes` folder within the `Host` folder contains an `AuthorisationCodes.txt` file for each available server area/continent or country. 
-Later you can Add new codes to this file for additional server areas but for now only the north american one is active for testing.
+# AsterServer Auto Installer
 
-1. Clone or download this repository.
-2. Run the `HostScript.ps1` on your hosting machine to start the server.
-3. Run the `Client.bat` on client machines to connect to the server.
+This script (`AsterServer_AutoInstaller.bat`) simplifies the setup process for hosting and connecting to an AsterServer using Unreal Engine. It prompts the user to enter the necessary paths and generates the required batch files for hosting and connecting.
 
 ## Usage
 
-1. **HostScript.ps1**: This script listens for incoming connections and verifies the user's authorization code.
-   
-   - The script logs errors, connections, and user details to separate log files.
-   - Modify the `$allowedCodes` array to include your authorization codes.
+1. Run `AsterServer_AutoInstaller.bat`.
+2. Enter the path to the Unreal Engine editor executable when prompted.
+3. Enter the path to the host project file.
+4. Enter the path to the Unreal Engine client executable.
+5. Enter the path to the client project file.
+6. Enter the path to the folder containing the `AuthorizationCodes.txt` file for future server areas.
 
-2. **Client.bat**: This batch file provides a menu for connecting to our custom Aster-Server.
-   
+The script will generate two batch files:
+- `HostScript.bat`: Use this file to host the AsterServer.
+- `ClientScript.bat`: Use this file to connect to the AsterServer as a client.
 
-3. **StatsScript.ps1**: This script provides statistics on users currently connected to the server.
+Ensure that the paths provided are correct and point to valid Unreal Engine and project files. Modify the batch files if additional customization is needed.
+
+## License
+
+This project is SEMI-OPEN SOURCED TO CHOSEN PARTIES AND COLLABORATORS AND FULLY OPEN SOURCE TO MODDERS
 
 
 ---
