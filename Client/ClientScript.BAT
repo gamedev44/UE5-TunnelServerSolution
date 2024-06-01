@@ -10,12 +10,12 @@ set /p option="Enter option number: "
 
 if "%option%"=="1" (
     @echo off
-    set hostIp=RADMIN_VPN_HOST_IP ;REM Replace with the actual Radmin VPN IP address of the host.
+    set hostIp=26.63.38.182
     set port=7777
     set code=JOIN ;REM Update this to send actual codes when needed.
     set ueClientPath="C:\Program Files\Epic Games\UE_5.3\Engine\Binaries\Win64\UnrealEditor.exe"
     set ueProjectPath="C:\Users\herre\OneDrive\Documents\Unreal Projects\PolyStrike\Data\Low Poly Shooter Pack v5.0\PolyStrike.uproject"
-    set ueClientParams="%hostIp% -game -ResX-800-ResY-600 -WinX-0 -WinY-20 -log -nosteam"
+    set ueClientParams="-game -ResX=800 -ResY=600 -WinX=0 -WinY=20 -log -nosteam"
 
     powershell -ExecutionPolicy Bypass -NoLogo -NoProfile -Command ^
     "try { ^
@@ -33,7 +33,7 @@ if "%option%"=="1" (
     } catch { Write-Host 'Error connecting to server: ' $_; } ^
     finally { if ($client -ne $null) { $client.Close() } }"
 
-    start "" %ueClientPath% "%ueProjectPath%" %ueClientParams%
+    start "" %ueClientPath% "%ueProjectPath%" %hostIp% %ueClientParams%
 ) else if "%option%"=="2" (
     exit
 ) else (
