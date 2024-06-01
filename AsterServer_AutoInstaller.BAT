@@ -103,25 +103,7 @@ set clientBatchPath=%clientProjectPath%\ClientScript.bat
     echo )
 ) > %clientBatchPath%
 
-REM Write the README file
-set readmePath=%authCodesFolderPath%\README.md
-(
-    echo # AsterServer Auto Installer
-    echo This script will create the necessary batch files for the host and client to connect to the AsterServer.
-    echo.
-    echo ## Usage
-    echo 1. Run the `AsterServer_AutoInstaller.bat`.
-    echo 2. Enter the paths when prompted.
-    echo 3. Two batch files, `HostScript.bat` and `ClientScript.bat`, will be created in the specified project paths.
-    echo 4. Run `HostScript.bat` on the host machine and `ClientScript.bat` on the client machine.
-    echo.
-    echo ## Paths
-    echo - Host Unreal Engine Path: %hostUePath%
-    echo - Host Project Path: %hostProjectPath%
-    echo - Client Unreal Engine Path: %clientUePath%
-    echo - Client Project Path: %clientProjectPath%
-    echo - Authorization Codes Folder Path: %authCodesFolderPath%
-) > %readmePath%
 
-echo Installation complete. Batch files and README created successfully.
+
+echo Installation complete. Batch files created successfully.
 pause
